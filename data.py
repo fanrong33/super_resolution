@@ -1,3 +1,7 @@
+# encoding: utf-8
+""" 数据工具类
+"""
+
 from os.path import exists, join, basename
 from os import makedirs, remove
 from six.moves import urllib
@@ -8,6 +12,8 @@ from dataset import DatasetFromFolder
 
 
 def download_bsd300(dest="dataset"):
+    """ 下载 BSD300 数据集
+    """
     output_image_dir = join(dest, "BSDS300/images")
 
     if not exists(output_image_dir):
@@ -36,6 +42,8 @@ def calculate_valid_crop_size(crop_size, upscale_factor):
 
 
 def input_transform(crop_size, upscale_factor):
+    """ 返回输入 transform
+    """
     return Compose([
         CenterCrop(crop_size),
         Resize(crop_size // upscale_factor),
@@ -44,6 +52,8 @@ def input_transform(crop_size, upscale_factor):
 
 
 def target_transform(crop_size):
+    """ 返回目标 transform
+    """
     return Compose([
         CenterCrop(crop_size),
         ToTensor(),
@@ -51,8 +61,11 @@ def target_transform(crop_size):
 
 
 def get_training_set(upscale_factor):
+    """ 获取训练数据集
+    """
     root_dir = download_bsd300()
     train_dir = join(root_dir, "train")
+    
     crop_size = calculate_valid_crop_size(256, upscale_factor)
 
     return DatasetFromFolder(train_dir,
@@ -61,6 +74,8 @@ def get_training_set(upscale_factor):
 
 
 def get_test_set(upscale_factor):
+    """ 获取测试数据集
+    """
     root_dir = download_bsd300()
     test_dir = join(root_dir, "test")
     crop_size = calculate_valid_crop_size(256, upscale_factor)

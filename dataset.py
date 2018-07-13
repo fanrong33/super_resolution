@@ -1,3 +1,7 @@
+# encoding: utf-8
+""" 自定义数据集
+"""
+
 import torch.utils.data as data
 
 from os import listdir
